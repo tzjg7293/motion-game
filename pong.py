@@ -59,7 +59,8 @@ while True:
     
     # draw ball
     cv2.circle(img, (ballx, bally), 20, (255, 0, 255), cv2.FILLED)
-
+    
+    
     
     
     # calculate ball movement
@@ -67,12 +68,14 @@ while True:
         fx=fx[0:1]
         fy=fy[0:1]
     for i in range(len(fx)):
-        if math.sqrt((fx[i]-ballx)*(fx[i]-ballx) + (fy[i]-bally)*(fy[i]-bally)) < 50:
+        if math.sqrt((fx[i]-ballx)*(fx[i]-ballx) + (fy[i]-bally)*(fy[i]-bally)) < 40:
             fdx[i] = fx[i]-fox[i]
             fdy[i] = fy[i]-foy[i]
+        
         else:
             fdx[i] = 0
             fdy[i] = 0
+        
 
         balldx = 0.99*(balldx + fdx[i])
         balldy = 0.99*(balldy + fdy[i]) 
