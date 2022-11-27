@@ -6,8 +6,10 @@ const controls3d = window;
 
 testSupport([
     { client: 'Chrome' },
-    { client: 'Safari'},
+    { client: 'Safari' },
 ]);
+
+// device detection and compatibility
 function testSupport(supportedDevices) {
     const deviceDetector = new DeviceDetector();
     const detectedDevice = deviceDetector.parse(navigator.userAgent);
@@ -38,9 +40,11 @@ const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
 const canvasCtx = canvasElement.getContext('2d');
-const config = { locateFile: (file) => {
+const config = {
+    locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@${mpHands.VERSION}/${file}`;
-    } };
+    }
+};
 
 const fpsControl = new controls.FPS();
 
@@ -50,6 +54,7 @@ spinner.ontransitionend = () => {
     spinner.style.display = 'none';
 };
 
+// grid graph
 const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
 const grid = new controls3d.LandmarkGrid(landmarkContainer, {
     connectionColor: 0xCCCCCC,
@@ -70,7 +75,9 @@ function onResults(results) {
     fpsControl.tick();
     // Draw the overlays.
     canvasCtx.save();
+    // Clear part of the canvas to make it blank
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    // draw an image onto the canvas
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
     if (results.multiHandLandmarks && results.multiHandedness) {
         for (let index = 0; index < results.multiHandLandmarks.length; index++) {
@@ -78,14 +85,36 @@ function onResults(results) {
             const isRightHand = classification.label === 'Right';
             const landmarks = results.multiHandLandmarks[index];
             drawingUtils.drawConnectors(canvasCtx, landmarks, mpHands.HAND_CONNECTIONS, { color: isRightHand ? '#00FF00' : '#FF0000' });
-            drawingUtils.drawLandmarks(canvasCtx, landmarks, {
-                color: isRightHand ? '#00FF00' : '#FF0000',
-                fillColor: isRightHand ? '#FF0000' : '#00FF00',
-                radius: (data) => {
-                    return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
-                }
-            });
+            if (index == 8) {
+                drawingUtils.drawLandmarks(canvasCtx, landmarks, {
+                    color: isRightHand ? '#00FF00' : '#0000FF', //00FF00 = green    0000FF = blue
+                    fillColor: isRightHand ? '#0000FF' : '#00FF00',
+                    radius: (data) => {
+                        return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
+                    }
+                });
+            }
+            else {
+                drawingUtils.drawLandmarks(canvasCtx, landmarks, {
+                    color: isRightHand ? '#00FF00' : '#FF0000', //00FF00 = green    FF0000 = red
+                    fillColor: isRightHand ? '#FF0000' : '#00FF00',
+                    radius: (data) => {
+                        return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
+                    }
+
+                });
+            }
         }
+        // const classification = results.multiHandedness[8];
+        // const isRightHand = classification.label === 'Right';
+        // const index_finger = results.multiHandLandmarks[8];
+        // drawingUtils.drawLandmarks(canvasCtx, index_finger, {
+        //     color: index_isRightHand ? '#00FF00' : '#0000FF', //00FF00 = green    0000FF = blue
+        //     fillColor: index_isRightHand ? '#0000FF' : '#00FF00',
+        //     radius: (data) => {
+        //         return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
+        //     }
+        // });
     }
     canvasCtx.restore();
     if (results.multiHandWorldLandmarks) {
@@ -110,65 +139,83 @@ function onResults(results) {
         grid.updateLandmarks([]);
     }
 }
+
 const hands = new mpHands.Hands(config);
 hands.onResults(onResults);
 // Present a control panel through which the user can manipulate the solution
 // options.
 new controls
     .ControlPanel(controlsElement, {
-    selfieMode: true,
-    maxNumHands: 2,
-    modelComplexity: 1,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
-})
+        selfieMode: true,
+        maxNumHands: 2,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+    })
     .add([
-    new controls.StaticText({ title: 'MediaPipe Hands' }),
-    fpsControl,
-    new controls.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
-    new controls.SourcePicker({
-        onFrame: async (input, size) => {
-            const aspect = size.height / size.width;
-            let width, height;
-            if (window.innerWidth > window.innerHeight) {
-                height = window.innerHeight;
-                width = height / aspect;
-            }
-            else {
-                width = window.innerWidth;
-                height = width * aspect;
-            }
-            canvasElement.width = width;
-            canvasElement.height = height;
-            await hands.send({ image: input });
-        },
-    }),
-    new controls.Slider({
-        title: 'Max Number of Hands',
-        field: 'maxNumHands',
-        range: [1, 4],
-        step: 1
-    }),
-    new controls.Slider({
-        title: 'Model Complexity',
-        field: 'modelComplexity',
-        discrete: ['Lite', 'Full'],
-    }),
-    new controls.Slider({
-        title: 'Min Detection Confidence',
-        field: 'minDetectionConfidence',
-        range: [0, 1],
-        step: 0.01
-    }),
-    new controls.Slider({
-        title: 'Min Tracking Confidence',
-        field: 'minTrackingConfidence',
-        range: [0, 1],
-        step: 0.01
-    }),
-])
+        new controls.StaticText({ title: 'Hand simulator' }),
+        fpsControl,
+        new controls.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
+        new controls.SourcePicker({
+            onFrame: async (input, size) => {
+                const aspect = size.height / size.width;
+                let width, height;
+                if (window.innerWidth > window.innerHeight) {
+                    height = window.innerHeight;
+                    width = height / aspect;
+                }
+                else {
+                    width = window.innerWidth;
+                    height = width * aspect;
+                }
+                canvasElement.width = width;
+                canvasElement.height = height;
+                await hands.send({ image: input });
+            },
+        }),
+        new controls.Slider({
+            title: 'Max Number of Hands',
+            field: 'maxNumHands',
+            range: [1, 4],
+            step: 1
+        }),
+        new controls.Slider({
+            title: 'Model Complexity',
+            field: 'modelComplexity',
+            discrete: ['Lite', 'Full'],
+        }),
+        new controls.Slider({
+            title: 'Min Detection Confidence',
+            field: 'minDetectionConfidence',
+            range: [0, 1],
+            step: 0.01
+        }),
+        new controls.Slider({
+            title: 'Min Tracking Confidence',
+            field: 'minTrackingConfidence',
+            range: [0, 1],
+            step: 0.01
+        }),
+    ])
     .on(x => {
-    const options = x;
-    videoElement.classList.toggle('selfie', options.selfieMode);
-    hands.setOptions(options);
-});
+        const options = x;
+        videoElement.classList.toggle('selfie', options.selfieMode);
+        hands.setOptions(options);
+    });
+
+function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth) {
+    ctx.beginPath()
+    ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+    if (fill) {
+        ctx.fillStyle = fill
+        ctx.fill()
+    }
+    if (stroke) {
+        ctx.lineWidth = strokeWidth
+        ctx.strokeStyle = stroke
+        ctx.stroke()
+    }
+}
+
+// let ctx = canvas.getContext('2d')
+// drawCircle(ctx, 50, 50, 150, 'black', 'red', 2)
