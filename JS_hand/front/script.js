@@ -68,6 +68,21 @@ const grid = new controls3d.LandmarkGrid(landmarkContainer, {
     centered: false,
 });
 
+let ctx = canvasElement.getContext('2d');
+function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth) {
+    ctx.beginPath()
+    ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+    if (fill) {
+        ctx.fillStyle = fill
+        ctx.fill()
+    }
+    if (stroke) {
+        ctx.lineWidth = strokeWidth
+        ctx.strokeStyle = stroke
+        ctx.stroke()
+    }
+}
+
 function onResults(results) {
     // Hide the spinner.
     document.body.classList.add('loaded');
@@ -81,20 +96,24 @@ function onResults(results) {
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
     if (results.multiHandLandmarks && results.multiHandedness) {
         for (let index = 0; index < results.multiHandLandmarks.length; index++) {
-            const classification = results.multiHandedness[index];
+            var classification = results.multiHandedness[index];
             const isRightHand = classification.label === 'Right';
-            const landmarks = results.multiHandLandmarks[index];
+            var landmarks = results.multiHandLandmarks[index];
+            console.log(landmarks[8].x);
             drawingUtils.drawConnectors(canvasCtx, landmarks, mpHands.HAND_CONNECTIONS, { color: isRightHand ? '#00FF00' : '#FF0000' });
-            if (index == 8) {
-                drawingUtils.drawLandmarks(canvasCtx, landmarks, {
-                    color: isRightHand ? '#00FF00' : '#0000FF', //00FF00 = green    0000FF = blue
-                    fillColor: isRightHand ? '#0000FF' : '#00FF00',
-                    radius: (data) => {
-                        return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
-                    }
-                });
-            }
-            else {
+            // if (index = 8) {
+            //     console.log(index);
+            //     console.log(landmarks[index]);
+            //     console.log(results.poseLandmarks);
+            //     drawingUtils.drawLandmarks(canvasCtx, landmarks, {
+            //         color: isRightHand ? '#00FF00' : '#0000FF', //00FF00 = green    0000FF = blue
+            //         fillColor: isRightHand ? '#0000FF' : '#00FF00',
+            //         radius: (data) => {
+            //             return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
+            //         }
+            //     });
+            // }
+            // else {
                 drawingUtils.drawLandmarks(canvasCtx, landmarks, {
                     color: isRightHand ? '#00FF00' : '#FF0000', //00FF00 = green    FF0000 = red
                     fillColor: isRightHand ? '#FF0000' : '#00FF00',
@@ -103,18 +122,8 @@ function onResults(results) {
                     }
 
                 });
-            }
+            // }
         }
-        // const classification = results.multiHandedness[8];
-        // const isRightHand = classification.label === 'Right';
-        // const index_finger = results.multiHandLandmarks[8];
-        // drawingUtils.drawLandmarks(canvasCtx, index_finger, {
-        //     color: index_isRightHand ? '#00FF00' : '#0000FF', //00FF00 = green    0000FF = blue
-        //     fillColor: index_isRightHand ? '#0000FF' : '#00FF00',
-        //     radius: (data) => {
-        //         return drawingUtils.lerp(data.from.z, -0.15, .1, 10, 1);
-        //     }
-        // });
     }
     canvasCtx.restore();
     if (results.multiHandWorldLandmarks) {
@@ -153,7 +162,7 @@ new controls
         minTrackingConfidence: 0.5
     })
     .add([
-        new controls.StaticText({ title: 'Hand simulator' }),
+        new controls.StaticText({ title: 'PArcade' }),
         fpsControl,
         new controls.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
         new controls.SourcePicker({
@@ -202,20 +211,3 @@ new controls
         videoElement.classList.toggle('selfie', options.selfieMode);
         hands.setOptions(options);
     });
-
-function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth) {
-    ctx.beginPath()
-    ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
-    if (fill) {
-        ctx.fillStyle = fill
-        ctx.fill()
-    }
-    if (stroke) {
-        ctx.lineWidth = strokeWidth
-        ctx.strokeStyle = stroke
-        ctx.stroke()
-    }
-}
-
-// let ctx = canvas.getContext('2d')
-// drawCircle(ctx, 50, 50, 150, 'black', 'red', 2)
