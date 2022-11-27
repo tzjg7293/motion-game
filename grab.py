@@ -79,10 +79,6 @@ while True:
                     fx.append(cx)
                     fy.append(cy)
                     cv2.circle(img, (cx, cy), 20, (255, 0, 255), cv2.FILLED)
-                
-                if id == 7:
-                    joint7x.append(cx)
-                    joint7y.append(cy)
         
                 if id == 12:
                     middlex.append(cx)
