@@ -8,6 +8,17 @@
     <title>Parcade</title>
 
     <h1 class = "text-center mt-5 mb-5">Welcome to our mini arcade!</h1>
+    <script>
+      document.getElementById("btnradio1").onclick = multi();
+      function multi()
+      {
+        //This function prints out the multi player games
+      }
+      function single()
+      {
+        //This function prints out the single player games
+      }
+    </script>
 
     <body class = "">
       <div class = "container rounded-2 bg-white">
@@ -17,22 +28,51 @@
 
       <div class="border border-warning w-50 m-auto">
         <div class = "btn-group w-100">
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="btnradio1">Single Player</label>
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+          <label class="btn btn-outline-primary" for="btnradio1" >Single Player</label>
           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
           <label class="btn btn-outline-primary" for="btnradio2">Multi Player</label>
         </div>
       </div>
 
-      <div class = "card-container m-4">
-        <!-- Peter look into flex box to organize the cards it will make it easier-->
-        <div class="card" style="width: 18rem;">
+<!--
+      <div class = "card-container m-4 d-flex justify-content-around">
+        <!-- Peter look into flex box to organize the cards it will make it easier--
+        <div class="card" id = "hockey"style="width: 18rem;">
           <img src="https://s3.amazonaws.com/kzs3files/kidzsearchgl-realistic-air-hockey-ks120414-167346-img.png" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">Air Hockey</h5>
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div> 
-      </div>
+
+        <div class="card" style="width: 18rem;" id ="meteor">
+          <img src="https://s3.amazonaws.com/kzs3files/kidzsearchgl-realistic-air-hockey-ks120414-167346-img.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Meteor Rush</h5>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+        
+        <div class="card" style="width: 18rem;" id = "TTT">
+          <img src="https://s3.amazonaws.com/kzs3files/kidzsearchgl-realistic-air-hockey-ks120414-167346-img.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Tic Tac Toe</h5>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div> 
+
+        <div class="card" style="width: 18rem;" id = "maze">
+          <img src="https://s3.amazonaws.com/kzs3files/kidzsearchgl-realistic-air-hockey-ks120414-167346-img.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Maze!</h5>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+      <script>
+        
+
+      </script>
     </body>
   </html>
