@@ -2,10 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 import math
-import packaging
-import packaging.version
-import packaging.specifiers
-import packaging.requirements
+
  
 cap = cv2.VideoCapture(0)
  
