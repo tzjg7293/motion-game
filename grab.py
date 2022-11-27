@@ -2,8 +2,6 @@ import cv2
 import mediapipe as mp
 import time
 import math
-from random import randrange
-
  
 cap = cv2.VideoCapture(0)
  
@@ -17,8 +15,8 @@ cTime = 0
 success, img = cap.read()
 h, w, c = img.shape
 
-ballx=randrange(0,w)
-bally=randrange(0,h)
+ballx=int(w/2)
+bally=int(h/2)
 balldx=int(0)
 balldy=int(0)
 fdx=[0,0]
@@ -81,7 +79,7 @@ while True:
                     fx.append(cx)
                     fy.append(cy)
                     cv2.circle(img, (cx, cy), 20, (255, 0, 255), cv2.FILLED)
-                
+        
                 if id == 12:
                     middlex.append(cx)
                     middley.append(cy)
@@ -102,16 +100,12 @@ while True:
     for i in range(len(fx)):
         holdx=int((fx[i]+thumbx[i])/2)
         holdy=int((fy[i]+thumby[i])/2)
-        if getdistance(middlex[i],fx[i],middley[i],fy[i]) < 25 and getdistance(joint7x[i],fx[i],joint7y[i],fy[i]) < 25:
+        if getdistance(middlex[i],fx[i],middley[i],fy[i]) < 20 and getdistance(joint7x[i],fx[i],joint7y[i],fy[i]) < 20:
             click[i] = True
         if math.sqrt((fx[i]-ballx)*(fx[i]-ballx) + (fy[i]-bally)*(fy[i]-bally)) < 50:
             fdx[i] = fx[i]-fox[i]
             fdy[i] = fy[i]-foy[i]
             
-            if click[i]:
-                ballx=randrange(0,w)
-                bally=randrange(0,h)
-
             hold=False
             if math.sqrt((fx[i]-thumbx[i])*(fx[i]-thumbx[i]) + (fy[i]-thumby[i])*(fy[i]-thumby[i])) < 20:
                 hold=True
@@ -129,8 +123,7 @@ while True:
         #calculate distance
         distance[i] = math.sqrt((fx[i]-joint7x[i])*(fx[i]-joint7x[i]) + (fy[i]-joint7y[i])*(fy[i]-joint7y[i]))
     
-    cv2.putText(img, str(int(distance[1])), (int(w/10), int(h/9)), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-    cv2.putText(img, str(int(distance[0])), (int(w-(w/10)), int(h/9)), cv2.FONT_HERSHEY_PLAIN, 3,(255, 0, 255), 3)
+
     
 
     if int(ballx+balldx) < 0 or int(ballx+balldx) > w:
@@ -146,7 +139,7 @@ while True:
         ballx = int(ballx+balldx)
         bally = int(bally+balldy)
     
-    print(click)
+
 
 
     pTime = cTime

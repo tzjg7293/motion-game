@@ -108,13 +108,12 @@ while True:
             fdx[i] = fx[i]-fox[i]
             fdy[i] = fy[i]-foy[i]
             
-            if click[i]:
-                ballx=randrange(0,w)
-                bally=randrange(0,h)
 
-            hold=False
             if math.sqrt((fx[i]-thumbx[i])*(fx[i]-thumbx[i]) + (fy[i]-thumby[i])*(fy[i]-thumby[i])) < 20:
-                hold=True
+                if click[i]:
+                    ballx=randrange(0,w)
+                    bally=randrange(0,h)
+
                 
         else:
             fdx[i] = 0
@@ -129,8 +128,6 @@ while True:
         #calculate distance
         distance[i] = math.sqrt((fx[i]-joint7x[i])*(fx[i]-joint7x[i]) + (fy[i]-joint7y[i])*(fy[i]-joint7y[i]))
     
-    cv2.putText(img, str(int(distance[1])), (int(w/10), int(h/9)), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-    cv2.putText(img, str(int(distance[0])), (int(w-(w/10)), int(h/9)), cv2.FONT_HERSHEY_PLAIN, 3,(255, 0, 255), 3)
     
 
     if int(ballx+balldx) < 0 or int(ballx+balldx) > w:
@@ -138,15 +135,8 @@ while True:
 
     if int(bally+balldy) < 0 or int(bally+balldy) > h:
         balldy = -balldy
-    
-    if hold:
-        ballx = holdx
-        bally = holdy
-    else:
-        ballx = int(ballx+balldx)
-        bally = int(bally+balldy)
-    
-    print(click)
+
+
 
 
     pTime = cTime
