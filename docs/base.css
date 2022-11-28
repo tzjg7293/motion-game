@@ -1,0 +1,18 @@
+<<<<<<< HEAD:client/css/base.css
+/* body{
+    background: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    opacity: 0.8;
+    border-radius: 1em;
+    font-family: 'Roboto Mono', monospace;
+} */
+=======
+body{
+background: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
+background-repeat: no-repeat;
+height: 100vh;
+opacity: 0.8;
+border-radius: 1em;
+}
+>>>>>>> 87c9b3c8f557cdbe680d327141ec5c6d4b8aed88:docs/base.css
