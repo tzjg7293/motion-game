@@ -1,0 +1,42 @@
+body{
+    background: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    opacity: 0.8;
+    margin:0;
+    display:flex; 
+    flex-direction:column; 
+}
+.main-title{
+    color: black;
+    font-size: 5em;
+    text-align: center;
+    font-family: 'Arvo', serif;
+    font-weight: bold;
+}
+.page-title{
+    color: black;
+    font-size: 3em;
+    text-align: center;
+    font-family: 'Arvo', serif;
+    font-weight: bold;
+    margin: 1em 0em;
+}
+.title{
+    font-family: 'Arvo', serif;
+    font-size: 2em;
+}
+.title-desc{
+    color: black;
+    text-align: center;
+    font-size: 1.2em;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+.fw-400{
+    font-family: 'Arvo';
+    font-weight: 400;
+}
+.fs-5-5{
+    font-size: 1.1em;
+}

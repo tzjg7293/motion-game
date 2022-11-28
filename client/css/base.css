@@ -1,7 +1,8 @@
-body{
-background: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
-background-repeat: no-repeat;
-height: 100vh;
-opacity: 0.8;
-border-radius: 1em;
-}
+/* body{
+    background: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    opacity: 0.8;
+    border-radius: 1em;
+    font-family: 'Roboto Mono', monospace;
+} */
