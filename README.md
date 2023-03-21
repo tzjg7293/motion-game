@@ -10,6 +10,9 @@ It it important to know that in this hackathon project we were focused on **LEAR
 | Jimmy Ji  | 
 | Peter Okpoga Idoko |
 
+## Link to the project on DevPost
+https://devpost.com/software/parcade
+
 # Installation
 
 1. Clone the github repository
